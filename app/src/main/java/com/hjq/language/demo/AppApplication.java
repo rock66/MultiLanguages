@@ -2,7 +2,10 @@ package com.hjq.language.demo;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.hjq.language.MultiLanguages;
 import com.hjq.language.OnLanguageListener;
@@ -17,7 +20,8 @@ import java.util.Locale;
  *    desc   : 应用入口
  */
 public final class AppApplication extends Application {
-
+    private Context mOriginalContext;
+    private static final String TAG = "AppApplication";
     @Override
     public void onCreate() {
         super.onCreate();
@@ -42,7 +46,27 @@ public final class AppApplication extends Application {
 
     @Override
     protected void attachBaseContext(Context newBase) {
+        mOriginalContext = newBase;
         // 绑定语种
         super.attachBaseContext(MultiLanguages.attach(newBase));
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+
+        //fix 夜间模式不生效、横竖屏切换宽高获取错误
+        getResources().updateConfiguration(newConfig, mOriginalContext.getResources().getDisplayMetrics());
+
+        super.onConfigurationChanged(newConfig);
+
+        int w = getResources().getDisplayMetrics().widthPixels;
+        int h = getResources().getDisplayMetrics().heightPixels;
+
+        Log.e(TAG,"onConfigurationChanged======== w : " + w + " h : " + h);
+
+        w = getApplicationContext().getResources().getDisplayMetrics().widthPixels;
+        h = getApplicationContext().getResources().getDisplayMetrics().heightPixels;
+
+        Log.e(TAG,"onConfigurationChanged w : " + w + " h : " + h);
     }
 }

@@ -1,15 +1,20 @@
 package com.hjq.language.demo;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.hjq.language.MultiLanguages;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -22,6 +27,7 @@ import java.util.Locale;
 public final class MainActivity extends BaseActivity
         implements View.OnClickListener {
 
+    private static final String TAG = "MainActivity";
     private WebView mWebView;
 
     @Override
@@ -42,6 +48,23 @@ public final class MainActivity extends BaseActivity
         findViewById(R.id.btn_language_cn).setOnClickListener(this);
         findViewById(R.id.btn_language_tw).setOnClickListener(this);
         findViewById(R.id.btn_language_en).setOnClickListener(this);
+
+        Log.e(TAG,"onCreate======== w : ");
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        int w = getResources().getDisplayMetrics().widthPixels;
+        int h = getResources().getDisplayMetrics().heightPixels;
+
+        Log.e(TAG,"onConfigurationChanged======== w : " + w + " h : " + h);
+
+        w = getApplicationContext().getResources().getDisplayMetrics().widthPixels;
+        h = getApplicationContext().getResources().getDisplayMetrics().heightPixels;
+
+        Log.e(TAG,"onConfigurationChanged w : " + w + " h : " + h);
     }
 
     /**
